@@ -2,7 +2,6 @@ FROM ubuntu:14.04
 
 MAINTAINER SuLIngGG "admin@mlapp.cn"
 
-ENV TZ "Asia/Shanghai"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
