@@ -15,10 +15,13 @@ RUN apt-get -y update \
 	&& echo admin:admin | chpasswd \
 	&& echo 'admin ALL=(ALL:ALL) ALL' >> /etc/sudoers \
 	&& cd /home/admin \
-	&& git clone http://github.com/robbyrussell/oh-my-zsh /home/admin/.oh-my-zsh \
-	&& cp /home/admin/.oh-my-zsh/templates/zshrc.zsh-template /home/admin/.zshrc \
-	&& git clone http://github.com/zsh-users/zsh-syntax-highlighting /home/admin/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting \
-	&& git clone http://github.com/zsh-users/zsh-autosuggestions /home/admin/.oh-my-zsh/custom/plugins/zsh-autosuggestions \
+	&& git clone http://github.com/robbyrussell/oh-my-zsh ./.oh-my-zsh \
+	&& cp /home/admin/.oh-my-zsh/templates/zshrc.zsh-template ./.zshrc \
+	&& git clone http://github.com/zsh-users/zsh-syntax-highlighting ./.oh-my-zsh/custom/plugins/zsh-syntax-highlighting \
+	&& git clone http://github.com/zsh-users/zsh-autosuggestions ./.oh-my-zsh/custom/plugins/zsh-autosuggestions \
 	&& sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/g' .zshrc \
-	&& sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/g' .zshrc \
-	&& chown -R admin:admin /home/admin
+	&& sed -i 's/plugins=(git)/plugins=(git sudo zsh-syntax-highlighting zsh-autosuggestions)/g' .zshrc \
+	&& chown -R admin:admin /home/admin \
+	&& cp -R ./.oh-my-zsh/ /root/ \
+	&& cp ./.zshrc /root \
+	&& sed -i 's/\/home\/admin:/\/home\/admin:\/bin\/zsh/g' /etc/passwd
