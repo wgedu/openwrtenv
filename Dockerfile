@@ -9,10 +9,9 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/source
 	&& apt-get install -qqy --no-install-recommends wget curl vim htop git screen sudo nano ca-certificates rsync zsh build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
-	&& useradd admin \
-	&& mkdir /home/admin \
+	&& useradd -m admin \
 	&& echo admin:admin | chpasswd \
-	&& echo 'admin ALL=(ALL:ALL) ALL' >> /etc/sudoers \
+	&& echo 'admin ALL=NOPASSWD: ALL' > /etc/sudoers.d/admin \
 	&& cd /home/admin \
 	&& git clone git://github.com/robbyrussell/oh-my-zsh ./.oh-my-zsh \
 	&& cp /home/admin/.oh-my-zsh/templates/zshrc.zsh-template ./.zshrc \
@@ -20,8 +19,12 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/source
 	&& git clone git://github.com/zsh-users/zsh-autosuggestions ./.oh-my-zsh/custom/plugins/zsh-autosuggestions \
 	&& sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/g' .zshrc \
 	&& sed -i 's/plugins=(git)/plugins=(git sudo zsh-syntax-highlighting zsh-autosuggestions)/g' .zshrc \
-	&& sed -i 's/# DISABLE_AUTO_UPDATE/DISABLE_AUTO_UPDATE/g' .zshrc\
+	&& sed -i 's/# DISABLE_AUTO_UPDATE/DISABLE_AUTO_UPDATE/g' .zshrc \
 	&& chown -R admin:admin /home/admin \
 	&& cp -R ./.oh-my-zsh/ /root/ \
 	&& cp ./.zshrc /root \
 	&& sed -i 's/\/home\/admin:/\/home\/admin:\/bin\/zsh/g' /etc/passwd
+
+USER admin
+WORKDIR /home/admin
+
