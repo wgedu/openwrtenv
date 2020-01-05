@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
 MAINTAINER SuLIngGG "admin@mlapp.cn"
 
@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
 	&& apt-get -y update \
-	&& apt-get install -qqy --no-install-recommends wget curl vim htop git screen sudo nano ca-certificates rsync zsh build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler \
+	&& apt-get install -qqy --no-install-recommends wget curl vim htop git screen sudo nano ca-certificates rsync zsh tzdata build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& useradd -m admin \
@@ -24,7 +24,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/source
 	&& cp -R ./.oh-my-zsh/ /root/ \
 	&& cp ./.zshrc /root \
 	&& sed -i 's/\/home\/admin:/\/home\/admin:\/bin\/zsh/g' /etc/passwd \
-	&& echo "Asia/Shanghai" > /etc/timezone \
+	&& ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 	&& dpkg-reconfigure -f noninteractive tzdata
 
 USER admin
